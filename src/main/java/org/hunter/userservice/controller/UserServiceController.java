@@ -1,5 +1,6 @@
 package org.hunter.userservice.controller;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import org.hunter.userservice.model.User;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/user")
@@ -23,7 +25,12 @@ public class UserServiceController {
 
     @GetMapping(path = "/{id}", produces = "application/json")
     public User getUser(@PathVariable UUID id) {
-        return userRepository.findById(id).get();
+        try {
+            return userRepository.findById(id).get();
+        }
+        catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
