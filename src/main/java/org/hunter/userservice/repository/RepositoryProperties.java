@@ -1,8 +1,10 @@
-package org.hunter.userservice.config;
+package org.hunter.userservice.repository;
 
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
@@ -13,7 +15,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @EnableJdbcRepositories
-public class ApplicationConfig {
+public class RepositoryProperties {
 
     @Bean
     NamedParameterJdbcOperations operations() {
@@ -26,15 +28,8 @@ public class ApplicationConfig {
     }
 
     @Bean
+    @ConfigurationProperties(prefix="app.datasource")
     DataSource dataSource() {
-        BasicDataSource dataSourceConfig = new BasicDataSource();
-        dataSourceConfig.setDriverClassName("org.postgresql.Driver");
-
-        dataSourceConfig.setUrl("jdbc:postgresql://127.0.0.1:5432/databasename");
-        dataSourceConfig.setUsername("username");
-        dataSourceConfig.setValidationQuery("SELECT 1");
-        dataSourceConfig.setPassword("password");
-
-        return dataSourceConfig;
+        return DataSourceBuilder.create().type(BasicDataSource.class).build();
     }
 }
