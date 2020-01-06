@@ -4,7 +4,7 @@ host=db
 port=5432
 user=postgres
 password=
-db=loan
+db=user
 
 #start postgres
 /docker-entrypoint.sh postgres &
@@ -18,11 +18,11 @@ if [ "$?" -ne 0 ]; then
 fi
 
 #create dbs
-psql -h "${host}" -U "${user}" -c "drop database if exists ${db};"
+psql -h "${host}" -U "${user}" -c "drop database if exists \"${db}\";"
 createdb -h "${host}" -U "${user}" "${db}"
 
 #create schema/tables
-psql -h "${host}" -U "${user}" "${db}" -f /sql_scripts/loan_db_ddl.sql
+psql -h "${host}" -U "${user}" "${db}" -f /sql_scripts/user_db_ddl.sql
 
 #hold here or container will exit
 tail -f /dev/null
