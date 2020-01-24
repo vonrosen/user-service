@@ -13,6 +13,8 @@ public class User {
     private String username;
     private String password;
     private String email;
+    
+    public User() {}
 
     public User(UUID id, String username, String password, String email) {
         this.id = id;
