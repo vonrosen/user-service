@@ -3,7 +3,7 @@
 host=db
 port=5432
 user=postgres
-password=
+password=password
 db=user
 
 #start postgres
@@ -18,11 +18,11 @@ if [ "$?" -ne 0 ]; then
 fi
 
 #create dbs
-psql -h "${host}" -U "${user}" -c "drop database if exists \"${db}\";"
-createdb -h "${host}" -U "${user}" "${db}"
+PGPASSWORD=${password} psql -h "${host}" -U "${user}" -c "drop database if exists \"${db}\";"
+PGPASSWORD=${password} createdb -h "${host}" -U "${user}" "${db}"
 
 #create schema/tables
-psql -h "${host}" -U "${user}" "${db}" -f /sql_scripts/user_db_ddl.sql
+PGPASSWORD=${password} psql -h "${host}" -U "${user}" "${db}" -f /sql_scripts/user_db_ddl.sql
 
 #hold here or container will exit
 tail -f /dev/null

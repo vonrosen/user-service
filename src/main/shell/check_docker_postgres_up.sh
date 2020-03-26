@@ -3,7 +3,7 @@
 host=db
 port=5432
 user=postgres
-password=
+password=password
 
 db=$1
 query=$2
@@ -19,10 +19,10 @@ do
 
   #if db and query passed in, use those in health check, otherwise ignore
   if [ -z "$db" ]; then
-    pg_isready -h "${host}" -U "${user}" -p "${port}"
+    pg_isready -h "${host}" -p "${port}"
   else
     echo "Running test query to verify postgres is ready:" "${query}"
-    psql -h "${host}" -U "${user}" -p "${port}" "${db}" -c "${query}"
+    PGPASSWORD=${password} psql -h "${host}" -U "${user}" -p "${port}" "${db}" -c "${query}"
   fi
 
   if [ "$?" -eq 0 ]; then

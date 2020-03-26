@@ -3,6 +3,9 @@ services:
    db:
       image: postgres
       command: /bin/bash -c "/shell_scripts/configure_and_start_docker_postgres.sh"
+      environment:
+         - POSTGRES_PASSWORD=password
+         - POSTGRES_USER=postgres
       volumes:
          - ./src/main/shell:/shell_scripts
          - ./src/main/sql:/sql_scripts
