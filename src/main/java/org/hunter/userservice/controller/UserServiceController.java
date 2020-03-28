@@ -29,6 +29,11 @@ public class UserServiceController {
 		return new HealthStatus();
 	}
 
+	@PostMapping(path = "/webhook", consumes = "application/json")
+	@ResponseStatus(HttpStatus.OK)
+	public void getWebhook() {
+	}
+
 	@GetMapping(path = "/user/{id}", produces = "application/json")
 	public User getUser(@PathVariable UUID id) {
 		try {
